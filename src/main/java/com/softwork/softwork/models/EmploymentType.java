@@ -1,10 +1,15 @@
 package com.softwork.softwork.models;
 
-import javax.persistence.Column;
-import javax.persistence.ManyToMany;
-import java.util.List;
+import lombok.Data;
 
+import javax.persistence.*;
+import java.util.List;
+@Data
+@Entity
 public class EmploymentType {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
     private EnumEmploymentType name;
 //    @ManyToMany
 //    private List<Transaction> transaction;

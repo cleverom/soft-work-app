@@ -9,7 +9,6 @@ import javax.persistence.*;
 public class BaseModels {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
     private Long id;
     private String email;
     private String password;

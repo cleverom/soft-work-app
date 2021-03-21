@@ -1,11 +1,15 @@
 package com.softwork.softwork.models;
 
-import javax.persistence.Lob;
+import lombok.Data;
+
+import javax.persistence.Entity;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import java.util.List;
 
+@Data
+@Entity
 public class Applicant extends BaseModels{
     private String firstName;
     private String lastName;
@@ -18,7 +22,6 @@ public class Applicant extends BaseModels{
     private List<Project> projects;
     @ManyToMany
     private List<Skill> skills;
-    @OneToOne
     private Role role;
     private EnumEmploymentType enumEmploymentType;
 }
