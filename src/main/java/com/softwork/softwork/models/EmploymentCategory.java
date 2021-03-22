@@ -3,14 +3,14 @@ package com.softwork.softwork.models;
 import lombok.Data;
 
 import javax.persistence.*;
-import java.util.List;
+
 @Data
 @Entity
-public class EmploymentType {
+public class EmploymentCategory {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private EnumEmploymentType name;
+    private EmploymentEnum name;
 //    @ManyToMany
 //    private List<Transaction> transaction;
 }

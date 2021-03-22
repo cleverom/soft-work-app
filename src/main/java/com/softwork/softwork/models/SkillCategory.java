@@ -9,18 +9,23 @@ import javax.persistence.Id;
 
 @Data
 @Entity
-public class Skill {
+public class SkillCategory {
     @Id
     @GeneratedValue(strategy= GenerationType.AUTO)
     private long id;
-    private String label;
+    private String name;
     private String description;
 
-    public Skill() {
+    public SkillCategory(String name, String description) {
+        this.name = name;
+        this.description = description;
+    }
+
+    public SkillCategory() {
         super();
     }
 
-//    public Skill(String label, String description) {
+//    public SkillCategory(String label, String description) {
 //        super();
 //        this.label = label;
 //        this.description = description;

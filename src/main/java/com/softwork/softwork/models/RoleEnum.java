@@ -1,11 +1,11 @@
 package com.softwork.softwork.models;
 
-public enum Role {
+public enum RoleEnum {
     DEVELOPER(""),
     DESIGNER(""),
     PRODUCT_MANAGER(""),
     PROJECT_MANAGER("");
 
-    Role(String description) {
+    RoleEnum(String description) {
     }
 }

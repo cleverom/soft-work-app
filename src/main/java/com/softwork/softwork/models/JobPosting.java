@@ -16,13 +16,13 @@ public class JobPosting {
     private String description;
     private String requirements;
     @OneToMany
-    private List<Skill> skills;
+    private List<SkillCategory> skillCategories;
     private Long salary;
     private LocalDateTime deadline;
-    private EnumEmploymentType enumEmploymentType;
+    private EmploymentEnum employmentEnum;
+    @ManyToOne
+    private RoleCategory category;
     @OneToMany
-    private List<Category> categories;
-    @OneToMany
-    private List<ELevel> elevel;
+    private List<LevelCategory> elevel;
     private Integer position; //number of positions to be filled
 }
