@@ -84,6 +84,6 @@ public class RoleServiceImpl {
 //        applicant.setRoleCategory(roles);
 //    }
 
-    // stop here
+    // stop here and stop again
 
 }
