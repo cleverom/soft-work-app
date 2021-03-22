@@ -57,9 +57,9 @@ const useStyles = makeStyles((theme) => ({
   root: {
     display: "flex",
     flexDirection: "row",
-    marginLeft: 150,
+    marginLeft: 10,
     justifyContent: "flex-start",
-    paddingTop: "47%",
+    paddingTop: "45%",
     bottom: 0,
     "& > *": {
       margin: theme.spacing(2),
@@ -70,17 +70,14 @@ const useStyles = makeStyles((theme) => ({
   },
 
   hire: {
-    paddingLeft: "40px",
-    paddingRight: "40px",
+    paddingLeft: "30px",
+    paddingRight: "30px",
     background: "#F11818",
   },
   work: {
-    background: "none",
-    paddingTop: "10px",
-    paddingBottom: "10px",
-    color: "#000",
-    fontWeight: 800,
-    fontSize: "20px",
+    paddingLeft: "30px",
+    paddingRight: "30px",
+    background: "#F11818",
   },
   blogsContainer: {
     paddingTop: theme.spacing(3),
@@ -154,6 +151,13 @@ function Login() {
             className={classes.work}
           >
             Github
+          </Button>
+          <Button
+            variant="contained"
+            href="#contained-buttons"
+            className={classes.hire}
+          >
+            Behance
           </Button>
         </ButtonGroup>
       </Container>
