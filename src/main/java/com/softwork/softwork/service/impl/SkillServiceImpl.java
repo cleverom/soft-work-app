@@ -1,6 +1,9 @@
 package com.softwork.softwork.service.impl;
 
+import com.softwork.softwork.config.JwtTokenProvider;
 import com.softwork.softwork.config.UserDetailImpl;
+import com.softwork.softwork.exception.AppException;
+import com.softwork.softwork.models.RoleCategory;
 import com.softwork.softwork.models.SkillCategory;
 import com.softwork.softwork.models.User;
 import com.softwork.softwork.payload.ApiResponse;
@@ -13,6 +16,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import javax.servlet.http.HttpServletRequest;
 import java.net.URI;
 import java.util.List;
 import java.util.Optional;
@@ -27,6 +31,8 @@ public class SkillServiceImpl {
     SkillCategoryRepository skillCategoryRepository;
     @Autowired
     UserRepository userRepository;
+    @Autowired
+    JwtTokenProvider jwtTokenProvider;
 
 
     /**
@@ -43,7 +49,7 @@ public class SkillServiceImpl {
         }
 
         SkillCategory result = skillCategoryRepository
-                .save(new SkillCategory(categoryRequest.getName(), categoryRequest.getDescription()));
+                .save(new SkillCategory(categoryRequest.getName()));
 
         URI location = ServletUriComponentsBuilder.fromCurrentContextPath().path("/skill-category/{id}")
                 .buildAndExpand(result.getId()).toUri();
@@ -57,7 +63,6 @@ public class SkillServiceImpl {
         SkillCategory skillCategory = skillCategoryRepository.findById(catId).orElse(null);
         if (skillCategory != null) {
             skillCategory.setName(categoryRequest.getName());
-            skillCategory.setDescription(categoryRequest.getDescription());
             SkillCategory result = skillCategoryRepository.save(skillCategory);
             URI location = ServletUriComponentsBuilder.fromCurrentContextPath().path("/skill-category/{id}")
                     .buildAndExpand(result.getId()).toUri();
@@ -83,15 +88,17 @@ public class SkillServiceImpl {
 
     }
 
-    public ResponseEntity<?> chooseSkillCategory(Set<Long> catIds, UserDetailImpl currentUser) {
-        User user = userRepository.findById(currentUser.getId()).get();
+    public ResponseEntity<?> selectSkillCategory(Set<Long> catIds, HttpServletRequest request) {
+        Optional<User> user = jwtTokenProvider.resolveUser(request);
+        System.out.println(user.get().getUsername());
+        if(user.isEmpty()) throw new AppException("User does not exist");
         Set<SkillCategory> skillCategories = catIds.stream()
                 .map(id ->skillCategoryRepository.findById(id).get()).collect(Collectors.toSet());
-        skillCategories.addAll(user.getSkillCategories());
-        user.setSkillCategories(skillCategories);
-        userRepository.save(user);
+        skillCategories.addAll(user.get().getSkillCategory());
+        user.get().setSkillCategory(skillCategories);
+        userRepository.save(user.get());
         URI location = ServletUriComponentsBuilder.fromCurrentContextPath().path("/users/{username}")
-                .buildAndExpand(user.getUsername()).toUri();
+                .buildAndExpand(user.get().getUsername()).toUri();
 
         return ResponseEntity.created(location).body(new ApiResponse(
                 true, "Role category add successfully"));

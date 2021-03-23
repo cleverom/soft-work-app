@@ -28,23 +28,25 @@ public class RoleController {
 
 
 
-    @PostMapping(value = "/add")
     @PreAuthorize("hasAuthority('ADMIN')")
+    @PostMapping(value = "/add")
     public ResponseEntity<?> addCategory(@Valid @RequestBody CategoryRequest categoryRequest) {
         return roleService.addRoleCategory(categoryRequest);
     }
 
-    @PostMapping(value = "/update/{id}")
     @PreAuthorize("hasAuthority('ADMIN')")
+    @PostMapping(value = "/update/{id}")
     public ResponseEntity<?> updateCategory(@Valid @RequestBody CategoryRequest categoryRequest, @PathVariable(value="id", required = true) Long catId) {
         return roleService.updateRoleCategory(categoryRequest, catId);
     }
 
+    @PreAuthorize("hasAuthority('ADMIN')")
     @GetMapping(value = {"/get", "/get/{id}"})
     public ResponseEntity<?> getCategory(@PathVariable(value="id",required=false) Optional<Integer> id) {
         return roleService.getRoleCategory(id);
     }
 
+    @PreAuthorize("hasAuthority('USER')")
     @PostMapping(value = {"/select-role/{id}"})
     public ResponseEntity<?> selectRoleCategory(@PathVariable(value="id",required=false) Set<Long> ids,
                                                 HttpServletRequest request ){

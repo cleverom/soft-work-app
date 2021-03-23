@@ -34,7 +34,7 @@ public class User {
     @OneToMany
     private List<Project> projects;
     @ManyToMany
-    private Set<SkillCategory> skillCategories;
+    private Set<SkillCategory> skillCategory;
     @OneToOne
     private UserInfo userInfo;
 

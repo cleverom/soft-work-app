@@ -51,8 +51,8 @@ public class RoleServiceImpl {
         URI location = ServletUriComponentsBuilder.fromCurrentContextPath().path("/role-category/{id}")
                 .buildAndExpand(result.getId()).toUri();
 
-        return ResponseEntity.created(location).body(new ApiResponse(true, "RoleCategory has been added successfully!"));
-
+        return ResponseEntity.created(location).body(new ApiResponse(true,
+                "RoleCategory has been added successfully!"));
     }
 
     @SuppressWarnings({ "unchecked", "rawtypes" })
@@ -65,7 +65,8 @@ public class RoleServiceImpl {
             URI location = ServletUriComponentsBuilder.fromCurrentContextPath().path("/role-category/{id}")
                     .buildAndExpand(result.getId()).toUri();
 
-            return ResponseEntity.created(location).body(new ApiResponse(true, "RoleCategory has been updated successfully!"));
+            return ResponseEntity.created(location).body(new ApiResponse(true,
+                    "RoleCategory has been updated successfully!"));
         }
 
         return new ResponseEntity(

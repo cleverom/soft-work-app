@@ -44,8 +44,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                     .antMatchers("/", "/favicon.ico", "/**/*.png", "/**/*.gif",
                                 "/**/*.svg",  "/**/*.jpg", "/**/*.html", "/**/*.css", "/**/*.js")
                     .antMatchers("/api/v1/signin")
-                    .antMatchers("/api/v1/signup")
-                    .antMatchers("/api/v1/movies");
+                    .antMatchers("/api/v1/signup");
         }
 
     @Override

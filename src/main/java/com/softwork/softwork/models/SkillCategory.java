@@ -11,14 +11,12 @@ import javax.persistence.Id;
 @Entity
 public class SkillCategory {
     @Id
-    @GeneratedValue(strategy= GenerationType.AUTO)
+    @GeneratedValue(strategy= GenerationType.IDENTITY)
     private long id;
     private String name;
-    private String description;
 
-    public SkillCategory(String name, String description) {
+    public SkillCategory(String name) {
         this.name = name;
-        this.description = description;
     }
 
     public SkillCategory() {
