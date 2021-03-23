@@ -39,4 +39,6 @@ public class SkillController {
     public ResponseEntity<?> getCategory(@PathVariable(value="id",required=false) Optional<Integer> id) {
         return skillService.getSkillCategory(id);
     }
+
+
 }

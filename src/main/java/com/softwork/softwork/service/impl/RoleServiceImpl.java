@@ -1,22 +1,26 @@
 package com.softwork.softwork.service.impl;
 
-import com.softwork.softwork.models.Applicant;
+import com.softwork.softwork.config.JwtTokenProvider;
+import com.softwork.softwork.config.UserDetailImpl;
+import com.softwork.softwork.exception.AppException;
 import com.softwork.softwork.models.RoleCategory;
+import com.softwork.softwork.models.User;
 import com.softwork.softwork.payload.ApiResponse;
 import com.softwork.softwork.payload.CategoryRequest;
-import com.softwork.softwork.repository.ApplicantRepository;
 import com.softwork.softwork.repository.RoleCategoryRepository;
+import com.softwork.softwork.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
-import org.thymeleaf.expression.Sets;
 
+import javax.servlet.http.HttpServletRequest;
 import java.net.URI;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 public class RoleServiceImpl {
@@ -24,7 +28,9 @@ public class RoleServiceImpl {
     @Autowired
     RoleCategoryRepository roleCategoryRepository;
     @Autowired
-    ApplicantRepository applicantRepository;
+    UserRepository userRepository;
+    @Autowired
+    JwtTokenProvider jwtTokenProvider;
 
     /**
      * @param categoryRequest, role name e.g Software Engineer
@@ -42,7 +48,7 @@ public class RoleServiceImpl {
         RoleCategory result = roleCategoryRepository
                 .save(new RoleCategory(categoryRequest.getName(), categoryRequest.getDescription()));
 
-        URI location = ServletUriComponentsBuilder.fromCurrentContextPath().path("/category/{id}")
+        URI location = ServletUriComponentsBuilder.fromCurrentContextPath().path("/role-category/{id}")
                 .buildAndExpand(result.getId()).toUri();
 
         return ResponseEntity.created(location).body(new ApiResponse(true, "RoleCategory has been added successfully!"));
@@ -56,7 +62,7 @@ public class RoleServiceImpl {
             roleCategory.setName(categoryRequest.getName());
             roleCategory.setDescription(categoryRequest.getDescription());
             RoleCategory result = roleCategoryRepository.save(roleCategory);
-            URI location = ServletUriComponentsBuilder.fromCurrentContextPath().path("/roleCategory/{id}")
+            URI location = ServletUriComponentsBuilder.fromCurrentContextPath().path("/role-category/{id}")
                     .buildAndExpand(result.getId()).toUri();
 
             return ResponseEntity.created(location).body(new ApiResponse(true, "RoleCategory has been updated successfully!"));
@@ -79,11 +85,20 @@ public class RoleServiceImpl {
                 HttpStatus.BAD_REQUEST));
     }
 
-//    public ResponseEntity<?> addRole(Set<RoleCategory> roles, UserPrincipal currentUser){
-//        Applicant applicant = applicantRepository.findByEmail(currentUser.getEmail());
-//        applicant.setRoleCategory(roles);
-//    }
+    public ResponseEntity<?> selectRoleCategory(Set<Long> catIds, HttpServletRequest request) {
+        Optional<User> user = jwtTokenProvider.resolveUser(request);
+        System.out.println(user.get().getUsername());
+        if(user.isEmpty()) throw new AppException("User does not exist");
+        Set<RoleCategory> roleCategories = catIds.stream()
+                .map(id ->roleCategoryRepository.findById(id).get()).collect(Collectors.toSet());
+        roleCategories.addAll(user.get().getRoleCategory());
+        user.get().setRoleCategory(roleCategories);
+        userRepository.save(user.get());
+        URI location = ServletUriComponentsBuilder.fromCurrentContextPath().path("/users/{username}")
+                .buildAndExpand(user.get().getUsername()).toUri();
 
-    // stop here and stop again
+        return ResponseEntity.created(location).body(new ApiResponse(
+                true, "Role category add successfully"));
+    }
 
 }

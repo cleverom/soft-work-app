@@ -1,17 +1,19 @@
 package com.softwork.softwork.models;
 
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
 import javax.persistence.*;
 
-@Data
+@Getter
+@Setter
 @MappedSuperclass
-public class BaseModels {
+public class BaseModel {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String email;
-    private String password;
+
     private String phoneNumber;
     private String address;
     //private List<> country;
@@ -20,4 +22,6 @@ public class BaseModels {
     private String banner;
     private String linkedIn;
     private String website;
+
+
 }
